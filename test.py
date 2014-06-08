@@ -162,7 +162,7 @@ class NaiveBayesClassifier(ClassifierI):
         for (label, fname), probdist in self._feature_probdist.items():
             for fval in probdist.samples():
                 feature = (fname, fval)
-                features.add( feature )
+                features.add( feature ) 
                 p = probdist.prob(fval)
                 maxprob[feature] = max(p, maxprob[feature])
                 minprob[feature] = min(p, minprob[feature])
