@@ -6,10 +6,11 @@ import pickle
 import random
 import csv
 import re
+import pdb
 
-from gensim import corpora
-from gensim import models
+from gensim import corpora, models
 from NaiveBayesClassifier import NaiveBayesClassifier
+from collections import defaultdict
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
@@ -67,25 +68,58 @@ if __name__ == '__main__':
     # print dictionary.token2id
     dictionary = corpora.Dictionary.load('essays.dict')
 
-    # # transform string based documents into tokenID based vectors
+    # transform string based documents into tokenID based vectors
+    print 'Read Data'
     reader = csv.reader(open("../../dataset/small_samples/project_integrated_data.csv", 'rU'))
     pg2 = project_generator2(reader)
 
-    corpus = []
-    labels = []
+    print 'Divide data by resource_type'
 
-    test_set = []
+    t = 0
     for projectid, resource_type, doc, train_test, is_exciting in pg2:
-        if train_test == 'train':
-            d = dictionary.doc2bow(doc)
-            corpus.append(d)
-            labels.append(1 if is_exciting == '1' else 0)
-        else:
-            test_set.append(format_vector_as_dict)
+        print 'processing project', t
+        t = t + 1
 
+        d = dictionary.doc2bow(doc)
+        l = 1 if is_exciting == '1' else 0
+        
+        corpus[resource_type].append(d)
+        labels[resource_type].append(l)
 
-    # original feature
-    dataset = [(format_vector_as_dict(d), l) for (d, l) in zip(corpus, labels)]
+    # shuffle the data
+    random.seed(123456)
+    for k in corpus.keys():
+        combined = zip(corpus[k], labels[k])
+        random.shuffle(combined)
+        corpus[k][:], labels[k][:] = zip(*combined)
+
+    # serialize data
+    pickle.dump(corpus, open('corpus.dat', 'wb'))
+    pickle.dump(labels, open('labels.dat', 'wb'))
+    # corpus = pickle.load(open('corpus.dat', 'r'))
+    # labels = pickle.load(open('labels.dat', 'r'))
+
+    print 'Train LDA Models'
+    lda_models = {}
+    for k in corpus.keys():
+        lda_models[k] = models.ldamodel.LdaModel(corpus[k], id2word=dictionary, num_topics=100)
+
+    print 'Split Train / Test Data'
+    train_dat = defaultdict(list)
+    test_dat = defaultdict(list)
+
+    random.seed(123456)
+    for k in dataset.keys():
+        random.shuffle(dataset[k])
+        tmp_train = dataset[k][:int(len(dataset)*0.8)]
+        tmp_test = dataset[k][int(len(dataset)*0.8):]
+        train_dat[k] = lda[tmp_train]
+        test_dat[k] = lda[tmp_test]
+
+    print train_dat['Trips']
+
+    # translate feature
+    # dataset = [(format_vector_as_dict(d), l) for (d, l) in zip(corpus, labels)]
 
     # TFIDF
     # tfidf = models.TfidfModel(corpus)
@@ -101,34 +135,18 @@ if __name__ == '__main__':
     # test_set = pickle.load(open('test_set.dat', 'r'))
 
     # split original training set into train / test set.
-    print 'Prepare Train / Test Data'
-    random.seed(123456)
-    random.shuffle(dataset)
-    train_dat = dataset[:int(len(dataset)*0.8)]
-    test_dat = dataset[int(len(dataset)*0.8):]
-
-    
-
-    len_train = len(train_dat)
-    len_test = len(test_dat)
-    num_train0 = sum([l == 0 for t, l in train_dat])
-    num_train1 = sum([l == 1 for t, l in train_dat])
-    num_test0 = sum([l == 0 for t, l in test_dat])
-    num_test1 = sum([l == 1 for t, l in test_dat])
-
-    print len_train, len_test, num_train0, num_train1, num_test0, num_test1
 
     # training phase
-    print 'Start training Naive Bayes Classifier'
-    classifier = NaiveBayesClassifier.train(train_dat)
+    # print 'Start training Naive Bayes Classifier'
+    # classifier = NaiveBayesClassifier.train(train_dat)
 
-    # test the accuracy
-    print 'Testing'
-    results = classifier.batch_classify([fs for (fs, l) in test_dat])
-    correct = [l==r for ((fs,l), r) in zip(test_dat, results)]
-    if correct:
-        acc = float(sum(correct))/len(correct)
-    else:
-        acc = 0
+    # # test the accuracy
+    # print 'Testing'
+    # results = classifier.batch_classify([fs for (fs, l) in test_dat])
+    # correct = [l==r for ((fs,l), r) in zip(test_dat, results)]
+    # if correct:
+    #     acc = float(sum(correct))/len(correct)
+    # else:
+    #     acc = 0
 
-    print acc
+    # print acc

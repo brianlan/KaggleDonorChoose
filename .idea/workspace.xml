@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1e382eb6-3b10-4492-b47f-73bfd8b3843d" name="Default" comment="" />
+    <list default="true" id="1e382eb6-3b10-4492-b47f-73bfd8b3843d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/essays.py" afterPath="$PROJECT_DIR$/essays.py" />
+    </list>
     <ignored path="KaggleDonorChoose.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +28,8 @@
       <file leaf-file-name="essays.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/essays.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67654985" vertical-offset="938" max-vertical-offset="2040">
-              <caret line="96" column="55" selection-start-line="96" selection-start-column="55" selection-end-line="96" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.49885058" vertical-offset="1043" max-vertical-offset="2100">
+              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
               <folding>
                 <element signature="e#19#38#0" expanded="true" />
               </folding>
@@ -38,8 +40,8 @@
       <file leaf-file-name="prepare_project_data.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/prepare_project_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="201" max-vertical-offset="945">
-              <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="231" max-vertical-offset="1260">
+              <caret line="41" column="61" selection-start-line="41" selection-start-column="61" selection-end-line="41" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -337,8 +339,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="16" y="30" width="1400" height="860" extended-state="1" />
-    <editor active="true" />
+    <frame x="16" y="30" width="1400" height="860" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32857144" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32857144" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -380,7 +382,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="12" />
+      <option name="time" value="13" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -438,13 +440,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train_set.dat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.98276" vertical-offset="10500" max-vertical-offset="26664420">
-          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/NaiveBayesClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="407" max-vertical-offset="1770">
@@ -478,16 +473,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/prepare_project_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="412" max-vertical-offset="945">
-          <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="231" max-vertical-offset="1260">
+          <caret line="41" column="61" selection-start-line="41" selection-start-column="61" selection-end-line="41" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/essays.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67654985" vertical-offset="938" max-vertical-offset="2040">
-          <caret line="96" column="55" selection-start-line="96" selection-start-column="55" selection-end-line="96" selection-end-column="55" />
+        <state vertical-scroll-proportion="0.49885058" vertical-offset="1043" max-vertical-offset="2100">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
           <folding>
             <element signature="e#19#38#0" expanded="true" />
           </folding>
