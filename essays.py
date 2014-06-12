@@ -15,7 +15,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 
 
 def project_generator(csv_reader):
-    for projectid, essay, train_test, is_exciting in csv_reader:
+    for projectid, resource_type, essay, train_test, is_exciting in csv_reader:
         if projectid != 'projectid':
             doc = re.sub("\xe2\x80\x99", "'", essay)
             doc = re.split(',|\.| |\n|\t|\r|\\\\n|"|!|;|:|\+|%|@|#|\d|`|~|\?|<|>|/|\(|\)', doc.lower())
@@ -28,7 +28,7 @@ def project_generator(csv_reader):
 
 
 def project_generator2(csv_reader):
-    for projectid, essay, train_test, is_exciting in csv_reader:
+    for projectid, resource_type, essay, train_test, is_exciting in csv_reader:
         if projectid != 'projectid':
             doc = re.sub("\xe2\x80\x99", "'", essay)
             doc = re.split(',|\.| |\n|\t|\r|\\\\n|"|!|;|:|\+|%|@|#|\d|`|~|\?|<|>|/|\(|\)', doc.lower())
@@ -37,7 +37,7 @@ def project_generator2(csv_reader):
             # remove stop words
             doc = [w for w in doc if w not in stoplist]
 
-            yield projectid, doc, train_test, is_exciting
+            yield projectid, resource_type, doc, train_test, is_exciting
 
 
 def format_vector_as_dict(vec):
@@ -53,19 +53,19 @@ if __name__ == '__main__':
 
     stoplist = stoplist1 | stoplist2
 
-    # read essays
-    reader = csv.reader(open("../../dataset/small_samples/project_integrated_data.csv", 'rU'))
-    pg = project_generator(reader)
+    # # read essays
+    # reader = csv.reader(open("../../dataset/small_samples/project_integrated_data.csv", 'rU'))
+    # pg = project_generator(reader)
 
-    # build dictionary
-    dictionary = corpora.Dictionary(essay for essay in pg)
-    once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
-    dictionary.filter_tokens(once_ids) # remove stop words and words that appear only once
-    dictionary.compactify()
-    dictionary.save('essays.dict')
+    # # build dictionary
+    # dictionary = corpora.Dictionary(essay for essay in pg)
+    # once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
+    # dictionary.filter_tokens(once_ids) # remove stop words and words that appear only once
+    # dictionary.compactify()
+    # dictionary.save('essays.dict')
 
     # print dictionary.token2id
-    # dictionary = corpora.Dictionary.load('essays.dict')
+    dictionary = corpora.Dictionary.load('essays.dict')
 
     # # transform string based documents into tokenID based vectors
     reader = csv.reader(open("../../dataset/small_samples/project_integrated_data.csv", 'rU'))
@@ -73,8 +73,9 @@ if __name__ == '__main__':
 
     corpus = []
     labels = []
+
     test_set = []
-    for projectid, doc, train_test, is_exciting in pg2:
+    for projectid, resource_type, doc, train_test, is_exciting in pg2:
         if train_test == 'train':
             d = dictionary.doc2bow(doc)
             corpus.append(d)
@@ -84,27 +85,29 @@ if __name__ == '__main__':
 
 
     # original feature
-    train_set = [(format_vector_as_dict(d), l) for (d, l) in zip(corpus, labels)]
+    dataset = [(format_vector_as_dict(d), l) for (d, l) in zip(corpus, labels)]
 
     # TFIDF
     # tfidf = models.TfidfModel(corpus)
-    # train_set = []
+    # dataset = []
     # for (d, l) in zip(corpus, labels):
-    #     train_set.append((format_vector_as_dict(tfidf[d]), l))
+    #     dataset.append((format_vector_as_dict(tfidf[d]), l))
 
     # serialize train / test set
-    pickle.dump(train_set, open('train_set.dat', 'wb'))
+    # pickle.dump(dataset, open('dataset.dat', 'wb'))
     # pickle.dump(test_set, open('test_set.dat', 'wb'))
 
-    # train_set = pickle.load(open('train_set.dat', 'r'))
+    # dataset = pickle.load(open('dataset.dat', 'r'))
     # test_set = pickle.load(open('test_set.dat', 'r'))
 
     # split original training set into train / test set.
     print 'Prepare Train / Test Data'
     random.seed(123456)
-    random.shuffle(train_set)
-    train_dat = train_set[:int(len(train_set)*0.8)]
-    test_dat = train_set[int(len(train_set)*0.8):]
+    random.shuffle(dataset)
+    train_dat = dataset[:int(len(dataset)*0.8)]
+    test_dat = dataset[int(len(dataset)*0.8):]
+
+    
 
     len_train = len(train_dat)
     len_test = len(test_dat)
